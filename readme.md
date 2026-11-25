@@ -1,4 +1,27 @@
-🎥 OverlayKu — Custom Stream OverlaysKoleksi custom overlay berbasis HTML/CSS/JS untuk kebutuhan livestreaming di OBS Studio dan TikTok LIVE Studio. Dilengkapi dengan Homepage Dashboard Auto-Scan yang otomatis mendeteksi seluruh file .html di repository ini.🌐 Live Dashboard: https://overlayku.vercel.app📦 Repository: https://github.com/abdanyak/overlay-stream✨ Fitur Dashboard (index.html)Auto-Scan Repository: Otomatis membaca semua file .html di folder mana pun menggunakan GitHub API (tidak perlu mendaftarkan file secara manual).Filter Folder & Pencarian: Memudahkan mencari overlay berdasarkan nama folder/tema atau nama file.1-Click Copy URL & Preview: Langsung salin URL siap pakai untuk OBS / TikTok LIVE Studio atau intip tampilannya di tab baru.Light & Dark Mode: Tampilan dashboard netral yang nyaman digunakan untuk berbagai tema overlay.📁 Struktur FolderStruktur folder bersifat fleksibel. Kamu bebas membuat folder tema apa saja (misalnya di dalam themes/ atau langsung di root), dan index.html akan otomatis mengelompokkannya berdasarkan lokasi foldernya:overlay-stream/
+# 🎥 OverlayKu — Custom Stream Overlays
+
+Koleksi custom overlay berbasis HTML/CSS/JS untuk kebutuhan livestreaming di **OBS Studio** dan **TikTok LIVE Studio**. Dilengkapi dengan **Homepage Dashboard Auto-Scan** yang otomatis mendeteksi seluruh file `.html` di repository ini.
+
+* 🌐 **Live Dashboard:** `https://overlayku.vercel.app`
+* 📦 **Repository:** `https://github.com/abdanyak/overlay-stream`
+
+---
+
+## ✨ Fitur Dashboard (`index.html`)
+
+* **Auto-Scan Repository:** Otomatis membaca semua file `.html` di folder mana pun menggunakan GitHub API (tidak perlu mendaftarkan file secara manual).
+* **Filter Folder & Pencarian:** Memudahkan mencari overlay berdasarkan nama folder/tema atau nama file.
+* **1-Click Copy URL & Preview:** Langsung salin URL siap pakai untuk OBS / TikTok LIVE Studio atau intip tampilannya di tab baru.
+* **Light & Dark Mode:** Tampilan dashboard netral yang nyaman digunakan untuk berbagai tema overlay.
+
+---
+
+## 📁 Struktur Folder
+
+Struktur folder bersifat **fleksibel**. Kamu bebas membuat folder tema apa saja (misalnya di dalam `themes/` atau langsung di root), dan `index.html` akan otomatis mengelompokkannya berdasarkan lokasi foldernya:
+
+```text
+overlay-stream/
 ├── index.html                        # Homepage Dashboard (Auto-Scan GitHub API)
 ├── README.md
 └── themes/
@@ -12,7 +35,59 @@
     │   └── tiktok-alerts.html
     └── tema-lainnya/                 # Bebas tambah folder tema baru di sini
         └── ...
-📐 Rekomendasi Ukuran (Canvas & Overlay)1. Resolusi Canvas StreamLandscape (16:9): 1920 x 1080 px (OBS Studio / TikTok LIVE Studio Landscape)Portrait (9:16): 1080 x 1920 px (TikTok LIVE Studio Vertikal — sesuaikan skala lebar overlay agar pas di layar)2. Panduan Ukuran per Jenis OverlayGunakan acuan ukuran (Width x Height) berikut saat menambahkan Browser Source (OBS) atau Link (TikTok LIVE Studio):Jenis OverlayRekomendasi Ukuran (px)Ukuran Widget Pasangan (px)Posisi LayerRunning Text Frame1200 x 80SociaBuzz: 940 x 60Frame di bawah, teks di atasWebcam Frame640 x 380Kamera (16:9): 610 x 345Frame di atas kameraChat Box Frame420 x 560Widget Chat: 380 x 450Frame di bawah widget chatTop Info / Socials Bar900 x 64—Atas tengah layarStarting / BRB / Ending1920 x 1080—Fullscreen (scene terpisah)Alert Box (Donasi)640 x 240—Paling atas (tengah/atas layar)TikTok Alerts (Toast)460 x 110—Pojok kiri/kanan layarTips Parameter URL: Untuk overlay alert multi-tipe (seperti tiktok-alerts.html), tambahkan ?type=follow, ?type=share, atau ?type=like di akhir URL jika ingin memanggil satu jenis alert saja.🚀 Cara PemakaianDi TikTok LIVE StudioBuka https://overlayku.vercel.app di browser.Cari overlay yang diinginkan, lalu klik Copy URL.Di TikTok LIVE Studio, klik Add Source > pilih Link.Paste URL tersebut, lalu atur Width dan Height mengikuti tabel rekomendasi di atas.Sesuaikan urutan layer (frame webcam di atas kamera, frame teks/chat di bawah widget).Di OBS StudioGunakan URL dari dashboard lewat menu Sources > Browser, atau centang Local File jika ingin memuat file HTML langsung dari komputer.Untuk overlay berpasangan (misal Frame Running Text + SociaBuzz), blok kedua source lalu klik kanan > Group Selected Items agar bisa digeser bersamaan.🛠️ Cara Menambah Tema & Overlay BaruKarena index.html sudah menggunakan fitur Auto-Scan dan repository terhubung ke Vercel (auto-deploy), kamu tidak perlu mengedit index.html lagi saat menambah overlay baru:Buat folder tema baru atau tambahkan file .html baru di lokal.Push perubahan ke GitHub:git add .
-git commit -m "add: tema overlay baru"
-git push origin main
-Vercel akan otomatis memperbarui https://overlayku.vercel.app, dan file baru kamu langsung muncul di dashboard.Catatan: Pastikan visibilitas repository abdanyak/overlay-stream tetap diset ke Public agar fitur auto-scan GitHub API di index.html dapat membaca daftar file secara otomatis.
+```
+
+---
+
+## 📐 Rekomendasi Ukuran (Canvas & Overlay)
+
+### 1. Resolusi Canvas Stream
+* **Landscape (16:9):** `1920 x 1080` px (OBS Studio / TikTok LIVE Studio Landscape)
+* **Portrait (9:16):** `1080 x 1920` px (TikTok LIVE Studio Vertikal — sesuaikan skala lebar overlay agar pas di layar)
+
+### 2. Panduan Ukuran per Jenis Overlay
+Gunakan acuan ukuran (*Width x Height*) berikut saat menambahkan **Browser Source** (OBS) atau **Link** (TikTok LIVE Studio):
+
+| Jenis Overlay | Rekomendasi Ukuran (px) | Ukuran Widget Pasangan (px) | Posisi Layer |
+| :--- | :--- | :--- | :--- |
+| **Running Text Frame** | `1200 x 80` | SociaBuzz: `940 x 60` | Frame di bawah, teks di atas |
+| **Webcam Frame** | `640 x 380` | Kamera (16:9): `610 x 345` | Frame di atas kamera |
+| **Chat Box Frame** | `420 x 560` | Widget Chat: `380 x 450` | Frame di bawah widget chat |
+| **Top Info / Socials Bar** | `900 x 64` | — | Atas tengah layar |
+| **Starting / BRB / Ending** | `1920 x 1080` | — | Fullscreen (scene terpisah) |
+| **Alert Box (Donasi)** | `640 x 240` | — | Paling atas (tengah/atas layar) |
+| **TikTok Alerts (Toast)** | `460 x 110` | — | Pojok kiri/kanan layar |
+
+> **Tips Parameter URL:** Untuk overlay alert multi-tipe (seperti `tiktok-alerts.html`), tambahkan `?type=follow`, `?type=share`, atau `?type=like` di akhir URL jika ingin memanggil satu jenis alert saja.
+
+---
+
+## 🚀 Cara Pemakaian
+
+### Di TikTok LIVE Studio
+1. Buka `https://overlayku.vercel.app` di browser.
+2. Cari overlay yang diinginkan, lalu klik **Copy URL**.
+3. Di TikTok LIVE Studio, klik **Add Source** > pilih **Link**.
+4. Paste URL tersebut, lalu atur **Width** dan **Height** mengikuti tabel rekomendasi di atas.
+5. Sesuaikan urutan layer (frame webcam di atas kamera, frame teks/chat di bawah widget).
+
+### Di OBS Studio
+* Gunakan URL dari dashboard lewat menu **Sources > Browser**, atau centang **Local File** jika ingin memuat file HTML langsung dari komputer.
+* Untuk overlay berpasangan (misal *Frame Running Text* + *SociaBuzz*), blok kedua source lalu klik kanan > **Group Selected Items** agar bisa digeser bersamaan.
+
+---
+
+## 🛠️ Cara Menambah Tema & Overlay Baru
+
+Karena `index.html` sudah menggunakan fitur **Auto-Scan** dan repository terhubung ke **Vercel** (auto-deploy), kamu **tidak perlu mengedit `index.html`** lagi saat menambah overlay baru:
+
+1. Buat folder tema baru atau tambahkan file `.html` baru di lokal.
+2. Push perubahan ke GitHub:
+   ```bash
+   git add .
+   git commit -m "add: tema overlay baru"
+   git push origin main
+   ```
+3. Vercel akan otomatis memperbarui `https://overlayku.vercel.app`, dan file baru kamu langsung muncul di dashboard.
+
+> **Catatan:** Pastikan visibilitas repository `abdanyak/overlay-stream` tetap diset ke **Public** agar fitur auto-scan GitHub API di `index.html` dapat membaca daftar file secara otomatis.
