@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OverlayKu — Stream Overlay Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8FAF9;
+      --card: #FFFFFF;
+      --text: #14241E;
+      --muted: #5A7066;
+      --accent: #059669;
+      --accent-hover: #047857;
+      --gold: #C89F3C;
+      --border: #E2EAE6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 40px 20px 80px;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand h1 span {
+      color: var(--accent);
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .domain-pill {
+      background: #ECFDF5;
+      color: var(--accent);
+      border: 1px solid #A7F3D0;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .theme-section {
+      margin-bottom: 48px;
+    }
+
+    .theme-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .theme-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-title h2 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .theme-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+    }
+
+    .folder-path {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--muted);
+      background: #EEF3F0;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 10px 24px rgba(15, 40, 30, 0.06);
+    }
+
+    .card-top h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .card-top p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .meta {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: #ECFDF5;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      font-family: inherit;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-outline {
+      background: #F1F5F3;
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: #E2EAE6;
+    }
+
+    /* Toast notifikasi saat URL disalin */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #14241E;
+      color: #FAF8F2;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border-left: 4px solid var(--gold);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>✦ Overlay<span>Ku</span></h1>
+        <p>Kumpulan custom stream overlay untuk OBS Studio & TikTok LIVE Studio.</p>
+      </div>
+      <div class="domain-pill" id="live-domain">overlayku.vercel.app</div>
+    </header>
+
+    <main id="app"></main>
+  </div>
+
+  <div id="toast">URL berhasil disalin!</div>
+
+  <script>
+    // =========================================================
+    // DAFTAR TEMA & OVERLAY
+    // Nanti kalau bikin tema baru, tinggal tambahkan blok baru di sini!
+    // =========================================================
+    const THEMES = [
+      {
+        name: "Anime Minimalist",
+        badge: "Ivory • Emerald • Gold",
+        folder: "themes/anime-minimalist",
+        items: [
+          {
+            title: "Running Text Frame",
+            desc: "Bingkai layer bawah untuk running text SociaBuzz.",
+            file: "running-text.html",
+            size: "1200 × 80 px"
+          },
+          {
+            title: "Webcam Frame",
+            desc: "Bingkai kamera dengan sudut aksen emerald & gold.",
+            file: "webcam.html",
+            size: "640 × 380 px"
+          },
+          {
+            title: "Chat Box Frame",
+            desc: "Panel transparan layer bawah untuk widget live chat.",
+            file: "chatbox.html",
+            size: "420 × 560 px"
+          },
+          {
+            title: "Top Info / Socials Bar",
+            desc: "Bar info media sosial untuk bagian atas layar.",
+            file: "topbar.html",
+            size: "900 × 64 px"
+          },
+          {
+            title: "Starting / BRB Screen",
+            desc: "Layar pembuka fullscreen dengan loading bar minimalis.",
+            file: "starting.html",
+            size: "1920 × 1080 px"
+          },
+          {
+            title: "Alert Box (Donasi)",
+            desc: "Template notifikasi dukungan / donasi.",
+            file: "alertbox.html",
+            size: "640 × 240 px"
+          },
+          {
+            title: "TikTok Alerts (Follow / Share / Like)",
+            desc: "Toast alert ringkas. Tambah ?type=follow, share, atau like.",
+            file: "tiktok-alerts.html",
+            size: "460 × 110 px"
+          }
+        ]
+      }
+      // Contoh menambah tema baru nanti:
+      // ,{
+      //   name: "Cyberpunk Neon",
+      //   badge: "Dark • Cyan • Magenta",
+      //   folder: "themes/cyberpunk",
+      //   items: [
+      //     { title: "Webcam Frame", desc: "...", file: "webcam.html", size: "640 × 380 px" }
+      //   ]
+      // }
+    ];
+
+    const origin = window.location.origin === "null" ? "https://overlayku.vercel.app" : window.location.origin;
+    document.getElementById("live-domain").textContent = origin.replace(/^https?:\/\//, "");
+
+    const app = document.getElementById("app");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function copyUrl(relativePath) {
+      const fullUrl = `${origin}/${relativePath}`;
+      navigator.clipboard.writeText(fullUrl).then(() => {
+        showToast(`Disalin: ${fullUrl}`);
+      });
+    }
+
+    THEMES.forEach(theme => {
+      const section = document.createElement("section");
+      section.className = "theme-section";
+
+      const cardsHtml = theme.items.map(item => {
+        const path = `${theme.folder}/${item.file}`;
+        return `
+          <div class="card">
+            <div class="card-top">
+              <h3>${item.title}</h3>
+              <p>${item.desc}</p>
+              <span class="meta">📐 ${item.size}</span>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="copyUrl('${path}')">Copy URL</button>
+              <a class="btn btn-outline" href="${path}" target="_blank">Preview ↗</a>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      section.innerHTML = `
+        <div class="theme-header">
+          <div class="theme-title">
+            <h2>${theme.name}</h2>
+            <span class="theme-badge">${theme.badge}</span>
+          </div>
+          <span class="folder-path">/${theme.folder}/</span>
+        </div>
+        <div class="grid">${cardsHtml}</div>
+      `;
+
+      app.appendChild(section);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minimalist Anime Top Bar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: transparent;
+      width: 900px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+      overflow: hidden;
+    }
+
+    .topbar {
+      width: 880px;
+      height: 44px;
+      background: rgba(250, 248, 242, 0.92);
+      border: 1.5px solid rgba(212, 175, 55, 0.75);
+      clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      box-shadow: 0 4px 14px rgba(10, 35, 25, 0.12);
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1C2B24;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+
+    .tag {
+      background: #065F46;
+      color: #FAF8F2;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+
+    .tag.gold {
+      background: #D4AF37;
+      color: #1C2B24;
+    }
+
+    .divider {
+      width: 5px;
+      height: 5px;
+      background: #10B981;
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="item">
+      <span class="tag">TIKTOK</span>
+      <span>@username</span>
+    </div>
+    <div class="divider"></div>
+    <div class="item">
+      <span class="tag gold">IG</span>
+      <span>@username</span>
+    </div>
+    <div class="divider"></div>
+    <div class="item">
+      <span class="tag">DISCORD</span>
+      <span>discord.gg/server</span>
+    </div>
+  </div>
+</body>
+</html>

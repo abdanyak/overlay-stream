@@ -1,0 +1,10 @@
+Tips Cepat untuk TikTok LIVE Studio
+Karena TikTok Studio tidak mendukung Custom CSS pada link SociaBuzz, kamu cukup samakan warna Notification/Alert langsung di dashboard SociaBuzz dengan kode warna berikut agar tetap serasi dengan overlay lainnya:
+
+Background Color: #FAF8F2 (Ivory)
+
+Text Color: #1C2B24 (Dark Charcoal Green)
+
+Highlight / Nama / Nominal: #065F46 (Emerald) atau #B45309 (Gold)
+
+Border / Accent: #D4AF37 (Gold)

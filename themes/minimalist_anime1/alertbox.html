@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minimalist Anime Alert Box</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: transparent;
+      width: 640px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+      overflow: hidden;
+    }
+
+    .alert-card {
+      position: relative;
+      width: 580px;
+      background: rgba(250, 248, 242, 0.96);
+      border: 2px solid #D4AF37;
+      border-left: 7px solid #10B981;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+      padding: 24px 30px 22px;
+      box-shadow: 0 14px 32px rgba(6, 95, 70, 0.22);
+      text-align: center;
+      animation: alertIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes alertIn {
+      0% { opacity: 0; transform: translateY(24px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Garis shimmer emas di bagian atas */
+    .alert-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -40%;
+      width: 40%;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent, #D4AF37, #FFF6D6, #D4AF37, transparent);
+      animation: shimmer 3.5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -40%; }
+      65%, 100% { left: 120%; }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #065F46 0%, #10B981 100%);
+      color: #FAF8F2;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 4px 18px;
+      margin-bottom: 14px;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      border-bottom: 2px solid #D4AF37;
+    }
+
+    .badge span.diamond { color: #FDE68A; }
+
+    .donor-line {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1C2B24;
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .donor-name { color: #065F46; }
+    .donor-amount { color: #B45309; }
+
+    .message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4B6358;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    /* Aksen pojok kanan bawah */
+    .corner-accent {
+      position: absolute;
+      right: 16px;
+      bottom: 10px;
+      display: flex;
+      gap: 4px;
+    }
+    .corner-accent span {
+      width: 5px;
+      height: 5px;
+      background: #10B981;
+      transform: rotate(45deg);
+    }
+    .corner-accent span:last-child { background: #D4AF37; }
+  </style>
+</head>
+<body>
+  <div class="alert-card">
+    <div class="badge">
+      <span class="diamond">✦</span> NEW SUPPORT • サポート
+    </div>
+    <div class="donor-line">
+      <span class="donor-name">Nama Supporter</span> • <span class="donor-amount">Rp 50.000</span>
+    </div>
+    <div class="message">
+      "Semangat terus live stream-nya, sehat selalu!"
+    </div>
+    <div class="corner-accent">
+      <span></span><span></span>
+    </div>
+  </div>
+</body>
+</html>

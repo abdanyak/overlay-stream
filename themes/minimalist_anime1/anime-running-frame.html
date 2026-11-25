@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minimalist Anime Running Text Frame</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: transparent;
+      width: 1200px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+    }
+
+    .hud-wrapper {
+      position: relative;
+      width: 1180px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      background: rgba(250, 248, 242, 0.92);
+      border: 1.5px solid rgba(212, 175, 55, 0.7);
+      clip-path: polygon(
+        0 0,
+        calc(100% - 16px) 0,
+        100% 16px,
+        100% 100%,
+        14px 100%,
+        0 calc(100% - 14px)
+      );
+      box-shadow: 0 6px 20px rgba(10, 35, 25, 0.15);
+    }
+
+    /* Garis shimmer emas tipis di bagian atas */
+    .hud-wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -40%;
+      width: 40%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #D4AF37, #FFF6D6, #D4AF37, transparent);
+      animation: shimmer 5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -40%; }
+      60%, 100% { left: 120%; }
+    }
+
+    /* Badge Kiri */
+    .badge {
+      position: relative;
+      height: 100%;
+      padding: 0 28px 0 20px;
+      background: linear-gradient(135deg, #065F46 0%, #10B981 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+      border-left: 4px solid #D4AF37;
+      flex-shrink: 0;
+    }
+
+    .badge-main {
+      color: #FAF8F2;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-sub {
+      color: #D1FAE5;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+
+    .diamond {
+      color: #FDE68A;
+      font-size: 11px;
+    }
+
+    /* Area kosong tempat layer SociaBuzz diletakkan */
+    .ticker-slot {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+
+    /* Aksen dekorasi pojok kanan */
+    .corner-accent {
+      position: absolute;
+      right: 14px;
+      bottom: 8px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .corner-accent span {
+      width: 4px;
+      height: 4px;
+      background: #10B981;
+      transform: rotate(45deg);
+      opacity: 0.7;
+    }
+
+    .corner-accent span:last-child {
+      background: #D4AF37;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="hud-wrapper">
+    <div class="badge">
+      <div class="badge-main"><span class="diamond">✦</span> SUPPORTER</div>
+      <div class="badge-sub">サポーター • LIVE</div>
+    </div>
+
+    <div class="ticker-slot">
+      <!-- Letakkan Browser Source SociaBuzz tepat di atas area ini -->
+      <div class="corner-accent">
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
