@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OverlayKu — Stream Overlay Hub</title>
+  <title>OverlayKu — Auto-Scan Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -43,12 +43,8 @@
       transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1120px; margin: 0 auto; }
 
-    /* Header */
     header {
       display: flex;
       flex-wrap: wrap;
@@ -77,17 +73,9 @@
       display: inline-block;
     }
 
-    .brand p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 2px;
-    }
+    .brand p { color: var(--muted); font-size: 14px; margin-top: 2px; }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .header-right { display: flex; align-items: center; gap: 10px; }
 
     .domain-pill {
       font-family: 'JetBrains Mono', monospace;
@@ -110,12 +98,10 @@
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: background 0.15s ease;
     }
 
     .mode-btn:hover { background: var(--surface-2); }
 
-    /* Toolbar: Search & Filter */
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -125,11 +111,7 @@
       margin-bottom: 32px;
     }
 
-    .filter-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 8px; }
 
     .pill {
       padding: 7px 14px;
@@ -141,23 +123,12 @@
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.15s ease;
     }
 
     .pill:hover { color: var(--text); border-color: var(--muted); }
+    .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-    .pill.active {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-
-    .search-box {
-      position: relative;
-      min-width: 240px;
-      flex: 0 1 300px;
-    }
-
+    .search-box { min-width: 240px; flex: 0 1 300px; }
     .search-box input {
       width: 100%;
       padding: 9px 14px;
@@ -169,53 +140,24 @@
       font-size: 13px;
       outline: none;
     }
-
     .search-box input:focus { border-color: var(--accent); }
 
-    /* Theme Section */
-    .theme-section { margin-bottom: 44px; }
+    .folder-section { margin-bottom: 40px; }
 
-    .theme-header {
+    .folder-header {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .theme-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .theme-info h2 {
-      font-size: 19px;
+    .folder-header h2 {
+      font-size: 18px;
       font-weight: 800;
-    }
-
-    .swatches {
       display: flex;
       align-items: center;
-      gap: 5px;
-      background: var(--surface);
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-    }
-
-    .swatch {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: 1px solid rgba(128, 128, 128, 0.35);
-    }
-
-    .theme-desc {
-      font-size: 13px;
-      color: var(--muted);
+      gap: 8px;
     }
 
     .folder-path {
@@ -227,18 +169,17 @@
       border-radius: 6px;
     }
 
-    /* Grid & Cards */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
     }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 18px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -252,87 +193,21 @@
       border-color: var(--accent);
     }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
     .card h3 {
       font-size: 15px;
       font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: capitalize;
     }
 
-    .cat-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: var(--surface-2);
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .card p {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .specs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .spec-badge {
+    .file-path {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    .spec-badge.secondary {
-      background: var(--surface-2);
       color: var(--muted);
+      word-break: break-all;
     }
 
-    /* Variant selector */
-    .variants {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .var-btn {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 9px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .var-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    /* Actions */
-    .actions {
-      display: flex;
-      gap: 8px;
-    }
+    .actions { display: flex; gap: 8px; }
 
     .btn {
       padding: 8px 12px;
@@ -344,15 +219,9 @@
       font-family: inherit;
       text-decoration: none;
       text-align: center;
-      transition: all 0.15s ease;
     }
 
-    .btn-primary {
-      flex: 1;
-      background: var(--accent);
-      color: #FFFFFF;
-    }
-
+    .btn-primary { flex: 1; background: var(--accent); color: #FFFFFF; }
     .btn-primary:hover { background: var(--accent-hover); }
 
     .btn-secondary {
@@ -360,111 +229,20 @@
       color: var(--text);
       border-color: var(--border);
     }
-
     .btn-secondary:hover { border-color: var(--muted); }
 
-    /* Empty state */
-    .empty {
+    .status-box {
       text-align: center;
       padding: 60px 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
       color: var(--muted);
       font-size: 14px;
     }
 
-    /* Preview Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 100;
-    }
+    .status-box strong { color: var(--text); }
 
-    .modal-backdrop.open { display: flex; }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      width: 100%;
-      max-width: 960px;
-      overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
-    }
-
-    .modal-head {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .modal-title { font-size: 15px; font-weight: 700; }
-
-    .modal-tools {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .bg-btn {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 5px 9px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .bg-btn.active { border-color: var(--accent); color: var(--accent); }
-
-    .preview-stage {
-      height: 440px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      padding: 20px;
-    }
-
-    .preview-stage.bg-check {
-      background-color: #e5e7eb;
-      background-image:
-        linear-gradient(45deg, #cbd5e1 25%, transparent 25%),
-        linear-gradient(-45deg, #cbd5e1 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #cbd5e1 75%),
-        linear-gradient(-45deg, transparent 75%, #cbd5e1 75%);
-      background-size: 20px 20px;
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    }
-    .preview-stage.bg-dark { background: #111827; }
-    .preview-stage.bg-light { background: #FFFFFF; }
-    .preview-stage.bg-green { background: #00B140; }
-
-    .iframe-wrap {
-      transform-origin: center center;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
-    }
-
-    .iframe-wrap iframe {
-      border: none;
-      display: block;
-      background: transparent;
-    }
-
-    /* Toast */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -480,9 +258,7 @@
       transform: translateY(10px);
       pointer-events: none;
       transition: all 0.2s ease;
-      z-index: 200;
     }
-
     #toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
@@ -491,7 +267,7 @@
     <header>
       <div class="brand">
         <h1><span class="brand-dot"></span> OverlayKu</h1>
-        <p>Hub koleksi stream overlay untuk OBS Studio & TikTok LIVE Studio.</p>
+        <p>Auto-detect semua file overlay HTML dari repository.</p>
       </div>
       <div class="header-right">
         <div class="domain-pill" id="live-domain">overlayku.vercel.app</div>
@@ -500,183 +276,57 @@
     </header>
 
     <div class="toolbar">
-      <div class="filter-pills" id="theme-filters"></div>
+      <div class="filter-pills" id="folder-filters"></div>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="Cari overlay atau tema..." oninput="render()" />
+        <input type="text" id="search-input" placeholder="Cari nama file atau folder..." oninput="render()" />
       </div>
     </div>
 
-    <main id="app"></main>
-  </div>
-
-  <!-- Live Preview Modal -->
-  <div class="modal-backdrop" id="preview-modal" onclick="closeModal(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-head">
-        <div class="modal-title" id="modal-title">Preview Overlay</div>
-        <div class="modal-tools">
-          <button class="bg-btn active" onclick="setStageBg('bg-check', this)">Transparan</button>
-          <button class="bg-btn" onclick="setStageBg('bg-dark', this)">Gelap</button>
-          <button class="bg-btn" onclick="setStageBg('bg-light', this)">Terang</button>
-          <button class="bg-btn" onclick="setStageBg('bg-green', this)">Green Screen</button>
-          <a class="bg-btn" id="modal-open-tab" href="#" target="_blank" style="text-decoration:none;">Buka Tab ↗</a>
-          <button class="bg-btn" onclick="closeModal()">✕ Tutup</button>
-        </div>
-      </div>
-      <div class="preview-stage bg-check" id="preview-stage">
-        <div class="iframe-wrap" id="iframe-wrap"></div>
-      </div>
-    </div>
+    <main id="app">
+      <div class="status-box">Memindai file overlay dari GitHub...</div>
+    </main>
   </div>
 
   <div id="toast">URL disalin!</div>
 
   <script>
     // =========================================================================
-    // KONFIGURASI TEMA & OVERLAY
-    // Cukup tambahkan objek baru di array THEMES ini setiap kali bikin tema baru.
+    // 1. KONFIGURASI GITHUB (WAJIB DIISI)
     // =========================================================================
-    const THEMES = [
-      {
-        id: "anime-minimalist",
-        name: "Anime Minimalist",
-        desc: "HUD bersih bergaya anime modern dengan potongan geometris.",
-        folder: "themes/anime-minimalist",
-        colors: ["#FAF8F2", "#10B981", "#D4AF37"],
-        items: [
-          {
-            title: "Running Text Frame",
-            category: "Frame",
-            desc: "Bingkai layer bawah untuk running text SociaBuzz.",
-            file: "running-text.html",
-            w: 1200, h: 80,
-            pair: "SociaBuzz: 940×60"
-          },
-          {
-            title: "Webcam Frame",
-            category: "Frame",
-            desc: "Bingkai kamera 16:9 dengan aksen sudut dan badge LIVE.",
-            file: "webcam.html",
-            w: 640, h: 380,
-            pair: "Kamera: 610×345"
-          },
-          {
-            title: "Chat Box Frame",
-            category: "Frame",
-            desc: "Panel semi-transparan layer bawah untuk widget live chat.",
-            file: "chatbox.html",
-            w: 420, h: 560,
-            pair: "Chat: 380×450"
-          },
-          {
-            title: "Top Info / Socials Bar",
-            category: "Bar",
-            desc: "Bar info media sosial untuk bagian atas layar.",
-            file: "topbar.html",
-            w: 900, h: 64
-          },
-          {
-            title: "Starting / BRB Screen",
-            category: "Screen",
-            desc: "Layar pembuka fullscreen dengan loading bar minimalis.",
-            file: "starting.html",
-            w: 1920, h: 1080
-          },
-          {
-            title: "Alert Box (Donasi)",
-            category: "Alert",
-            desc: "Template notifikasi dukungan / donasi dengan efek shimmer.",
-            file: "alertbox.html",
-            w: 640, h: 240
-          },
-          {
-            title: "TikTok Alerts",
-            category: "Alert",
-            desc: "Toast alert ringkas untuk interaksi penonton TikTok.",
-            file: "tiktok-alerts.html",
-            w: 460, h: 110,
-            variants: [
-              { label: "Semua", query: "" },
-              { label: "Follow", query: "?type=follow" },
-              { label: "Share", query: "?type=share" },
-              { label: "Like", query: "?type=like" }
-            ]
-          }
-        ]
-      }
-
-      // -----------------------------------------------------------------------
-      // CONTOH MENAMBAH TEMA BARU (Hapus tanda "//" jika sudah siap dipakai)
-      // -----------------------------------------------------------------------
-      // ,{
-      //   id: "cyberpunk-neon",
-      //   name: "Cyberpunk Neon",
-      //   desc: "Tema gelap futuristik dengan aksen cyan dan magenta.",
-      //   folder: "themes/cyberpunk-neon",
-      //   colors: ["#0F172A", "#06B6D4", "#EC4899"],
-      //   items: [
-      //     {
-      //       title: "Webcam Frame",
-      //       category: "Frame",
-      //       desc: "Bingkai webcam neon glow.",
-      //       file: "webcam.html",
-      //       w: 640, h: 380
-      //     }
-      //   ]
-      // }
-    ];
+    const GITHUB_USER   = "USERNAME_GITHUB_KAMU"; // Ganti dengan username GitHub kamu
+    const GITHUB_REPO   = "overlayku";            // Ganti dengan nama repo kamu
+    const GITHUB_BRANCH = "main";                 // Biasanya "main" atau "master"
 
     // =========================================================================
-    // LOGIKA APLIKASI (Tidak perlu diubah)
+    // 2. LOGIKA AUTO-SCAN (Tidak perlu diubah)
     // =========================================================================
     const origin = window.location.origin === "null" ? "https://overlayku.vercel.app" : window.location.origin;
     document.getElementById("live-domain").textContent = origin.replace(/^https?:\/\//, "");
 
-    let activeThemeFilter = "all";
-    const selectedVariants = {}; // Menyimpan pilihan varian aktif tiap kartu
+    let groupedFiles = {};
+    let activeFolder = "all";
 
-    // Light / Dark Mode
+    // Dark / Light Mode
     function toggleMode() {
       const html = document.documentElement;
-      const isDark = html.getAttribute("data-mode") === "dark";
-      const next = isDark ? "light" : "dark";
+      const next = html.getAttribute("data-mode") === "dark" ? "light" : "dark";
       html.setAttribute("data-mode", next);
       localStorage.setItem("overlayku-mode", next);
       document.getElementById("mode-toggle").textContent = next === "dark" ? "☀️ Light" : "🌙 Dark";
     }
-
-    (function initMode() {
-      const saved = localStorage.getItem("overlayku-mode");
-      if (saved === "dark") {
-        document.documentElement.setAttribute("data-mode", "dark");
-        document.getElementById("mode-toggle").textContent = "☀️ Light";
-      }
-    })();
-
-    // Render Filter Pills
-    function renderFilters() {
-      const wrap = document.getElementById("theme-filters");
-      const buttons = [
-        `<button class="pill ${activeThemeFilter === "all" ? "active" : ""}" onclick="setFilter('all')">Semua Tema (${THEMES.length})</button>`,
-        ...THEMES.map(t =>
-          `<button class="pill ${activeThemeFilter === t.id ? "active" : ""}" onclick="setFilter('${t.id}')">${t.name}</button>`
-        )
-      ];
-      wrap.innerHTML = buttons.join("");
+    if (localStorage.getItem("overlayku-mode") === "dark") {
+      document.documentElement.setAttribute("data-mode", "dark");
+      document.getElementById("mode-toggle").textContent = "☀️ Light";
     }
 
-    function setFilter(id) {
-      activeThemeFilter = id;
-      renderFilters();
-      render();
+    // Format nama file jadi judul rapi (misal: "running-text.html" -> "running text")
+    function formatTitle(filename) {
+      return filename
+        .replace(/\.html?$/i, "")
+        .replace(/[-_]+/g, " ");
     }
 
-    function selectVariant(cardKey, query) {
-      selectedVariants[cardKey] = query;
-      render();
-    }
-
-    // Toast
+    // Toast & Copy URL
     let toastTimer;
     function showToast(msg) {
       const toast = document.getElementById("toast");
@@ -687,7 +337,7 @@
     }
 
     function copyUrl(relativePath) {
-      const fullUrl = `${origin}/${relativePath}`;
+      const fullUrl = `${origin}/${encodeURI(relativePath)}`;
       navigator.clipboard.writeText(fullUrl).then(() => {
         showToast(`Disalin: ${fullUrl}`);
       }).catch(() => {
@@ -695,116 +345,111 @@
       });
     }
 
-    // Live Preview Modal
-    function openPreview(title, path, w, h) {
-      const modal = document.getElementById("preview-modal");
-      const stage = document.getElementById("preview-stage");
-      const wrap = document.getElementById("iframe-wrap");
+    // Fetch daftar file otomatis dari GitHub
+    async function scanRepo() {
+      const app = document.getElementById("app");
+      if (GITHUB_USER === "USERNAME_GITHUB_KAMU") {
+        app.innerHTML = `<div class="status-box">Silakan isi <strong>GITHUB_USER</strong> dan <strong>GITHUB_REPO</strong> di dalam file <code>index.html</code> terlebih dahulu.</div>`;
+        return;
+      }
 
-      document.getElementById("modal-title").textContent = `${title} (${w} × ${h} px)`;
-      document.getElementById("modal-open-tab").href = path;
-      modal.classList.add("open");
+      try {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/git/trees/${GITHUB_BRANCH}?recursive=1`;
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      // Hitung skala otomatis agar iframe pas di dalam modal
-      const maxW = stage.clientWidth - 40;
-      const maxH = stage.clientHeight - 40;
-      const scale = Math.min(1, maxW / w, maxH / h);
+        const data = await res.json();
+        const htmlFiles = (data.tree || []).filter(item =>
+          item.type === "blob" &&
+          /\.html?$/i.test(item.path) &&
+          item.path.toLowerCase() !== "index.html" // Kecualikan homepage sendiri
+        );
 
-      wrap.style.width = `${w}px`;
-      wrap.style.height = `${h}px`;
-      wrap.style.transform = `scale(${scale})`;
-      wrap.innerHTML = `<iframe src="${path}" width="${w}" height="${h}" scrolling="no"></iframe>`;
+        groupedFiles = {};
+        htmlFiles.forEach(item => {
+          const parts = item.path.split("/");
+          const filename = parts.pop();
+          const folder = parts.length > 0 ? parts.join("/") : "Root (Utama)";
+
+          if (!groupedFiles[folder]) groupedFiles[folder] = [];
+          groupedFiles[folder].push({
+            title: formatTitle(filename),
+            filename: filename,
+            path: item.path
+          });
+        });
+
+        renderFilters();
+        render();
+      } catch (err) {
+        app.innerHTML = `
+          <div class="status-box">
+            Gagal memindai repository (<strong>${err.message}</strong>).<br/>
+            Pastikan <strong>GITHUB_USER</strong>, <strong>GITHUB_REPO</strong>, <strong>GITHUB_BRANCH</strong> benar dan repo diset ke <strong>Public</strong>.
+          </div>
+        `;
+      }
     }
 
-    function closeModal() {
-      document.getElementById("preview-modal").classList.remove("open");
-      document.getElementById("iframe-wrap").innerHTML = "";
+    function renderFilters() {
+      const folders = Object.keys(groupedFiles).sort();
+      const wrap = document.getElementById("folder-filters");
+      wrap.innerHTML = [
+        `<button class="pill ${activeFolder === "all" ? "active" : ""}" onclick="setFilter('all')">Semua Folder (${folders.length})</button>`,
+        ...folders.map(f =>
+          `<button class="pill ${activeFolder === f ? "active" : ""}" onclick="setFilter('${f}')">${f}</button>`
+        )
+      ].join("");
     }
 
-    function setStageBg(cls, btn) {
-      const stage = document.getElementById("preview-stage");
-      stage.className = `preview-stage ${cls}`;
-      document.querySelectorAll(".modal-tools .bg-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+    function setFilter(folder) {
+      activeFolder = folder;
+      renderFilters();
+      render();
     }
 
-    // Render Main Grid
     function render() {
       const app = document.getElementById("app");
       const keyword = document.getElementById("search-input").value.trim().toLowerCase();
-      app.innerHTML = "";
+      const folders = Object.keys(groupedFiles).sort();
 
+      app.innerHTML = "";
       let totalShown = 0;
 
-      THEMES.forEach(theme => {
-        if (activeThemeFilter !== "all" && activeThemeFilter !== theme.id) return;
+      folders.forEach(folder => {
+        if (activeFolder !== "all" && activeFolder !== folder) return;
 
-        const filteredItems = theme.items.filter(item => {
+        const items = groupedFiles[folder].filter(item => {
           if (!keyword) return true;
           return (
             item.title.toLowerCase().includes(keyword) ||
-            item.desc.toLowerCase().includes(keyword) ||
-            item.category.toLowerCase().includes(keyword) ||
-            theme.name.toLowerCase().includes(keyword)
+            item.path.toLowerCase().includes(keyword) ||
+            folder.toLowerCase().includes(keyword)
           );
         });
 
-        if (filteredItems.length === 0) return;
-        totalShown += filteredItems.length;
+        if (items.length === 0) return;
+        totalShown += items.length;
 
-        const swatchesHtml = (theme.colors || [])
-          .map(c => `<span class="swatch" style="background:${c}" title="${c}"></span>`)
-          .join("");
-
-        const cardsHtml = filteredItems.map((item, idx) => {
-          const cardKey = `${theme.id}-${idx}`;
-          const activeQuery = selectedVariants[cardKey] ?? (item.variants ? item.variants[0].query : "");
-          const fullPath = `${theme.folder}/${item.file}${activeQuery}`;
-
-          const variantsHtml = item.variants
-            ? `<div class="variants">
-                ${item.variants.map(v => `
-                  <button class="var-btn ${activeQuery === v.query ? "active" : ""}"
-                    onclick="selectVariant('${cardKey}', '${v.query}')">${v.label}</button>
-                `).join("")}
-               </div>`
-            : "";
-
-          const pairHtml = item.pair ? `<span class="spec-badge secondary">${item.pair}</span>` : "";
-
-          return `
-            <div class="card">
-              <div>
-                <div class="card-header">
-                  <h3>${item.title}</h3>
-                  <span class="cat-tag">${item.category}</span>
-                </div>
-                <p>${item.desc}</p>
-                <div class="specs">
-                  <span class="spec-badge">${item.w} × ${item.h} px</span>
-                  ${pairHtml}
-                </div>
-                ${variantsHtml}
-              </div>
-              <div class="actions">
-                <button class="btn btn-primary" onclick="copyUrl('${fullPath}')">Copy URL</button>
-                <button class="btn btn-secondary" onclick="openPreview('${item.title}', '${fullPath}', ${item.w}, ${item.h})">Preview</button>
-                <a class="btn btn-secondary" href="${fullPath}" target="_blank" title="Buka di tab baru">↗</a>
-              </div>
+        const cardsHtml = items.map(item => `
+          <div class="card">
+            <div>
+              <h3>${item.title}</h3>
+              <div class="file-path">/${item.path}</div>
             </div>
-          `;
-        }).join("");
+            <div class="actions">
+              <button class="btn btn-primary" onclick="copyUrl('${item.path}')">Copy URL</button>
+              <a class="btn btn-secondary" href="${encodeURI(item.path)}" target="_blank">Preview ↗</a>
+            </div>
+          </div>
+        `).join("");
 
         const section = document.createElement("section");
-        section.className = "theme-section";
+        section.className = "folder-section";
         section.innerHTML = `
-          <div class="theme-header">
-            <div class="theme-info">
-              <h2>${theme.name}</h2>
-              ${swatchesHtml ? `<div class="swatches">${swatchesHtml}</div>` : ""}
-              <span class="theme-desc">${theme.desc || ""}</span>
-            </div>
-            <span class="folder-path">/${theme.folder}/</span>
+          <div class="folder-header">
+            <h2>📁 ${folder}</h2>
+            <span class="folder-path">${items.length} file</span>
           </div>
           <div class="grid">${cardsHtml}</div>
         `;
@@ -812,12 +457,11 @@
       });
 
       if (totalShown === 0) {
-        app.innerHTML = `<div class="empty">Tidak ada overlay yang cocok dengan pencarian "<strong>${keyword}</strong>".</div>`;
+        app.innerHTML = `<div class="status-box">Tidak ada file overlay HTML yang ditemukan.</div>`;
       }
     }
 
-    renderFilters();
-    render();
+    scanRepo();
   </script>
 </body>
 </html>
