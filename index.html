@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-mode="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OverlayKu — Stream Overlay Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F8FAF9;
-      --card: #FFFFFF;
-      --text: #14241E;
-      --muted: #5A7066;
-      --accent: #059669;
-      --accent-hover: #047857;
-      --gold: #C89F3C;
-      --border: #E2EAE6;
+      --bg: #F6F7F9;
+      --surface: #FFFFFF;
+      --surface-2: #F0F2F5;
+      --text: #111827;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --accent: #2563EB;
+      --accent-hover: #1D4ED8;
+      --accent-soft: #EFF6FF;
+      --shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
+    }
+
+    [data-mode="dark"] {
+      --bg: #0B0F17;
+      --surface: #131A26;
+      --surface-2: #1C2536;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --border: #243044;
+      --accent: #3B82F6;
+      --accent-hover: #2563EB;
+      --accent-soft: rgba(59, 130, 246, 0.14);
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,27 +39,29 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      padding: 40px 20px 80px;
+      padding: 32px 20px 80px;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .container {
-      max-width: 1040px;
+      max-width: 1120px;
       margin: 0 auto;
     }
 
+    /* Header */
     header {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
-      padding-bottom: 28px;
-      margin-bottom: 36px;
-      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
     }
 
     .brand h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       letter-spacing: -0.5px;
       display: flex;
@@ -52,267 +69,617 @@
       gap: 10px;
     }
 
-    .brand h1 span {
-      color: var(--accent);
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: var(--accent);
+      display: inline-block;
     }
 
     .brand p {
       color: var(--muted);
       font-size: 14px;
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
-    .domain-pill {
-      background: #ECFDF5;
-      color: var(--accent);
-      border: 1px solid #A7F3D0;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .theme-section {
-      margin-bottom: 48px;
-    }
-
-    .theme-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-      gap: 12px;
-    }
-
-    .theme-title {
+    .header-right {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .theme-title h2 {
-      font-size: 20px;
+    .domain-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s ease;
+    }
+
+    .mode-btn:hover { background: var(--surface-2); }
+
+    /* Toolbar: Search & Filter */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .pill:hover { color: var(--text); border-color: var(--muted); }
+
+    .pill.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 240px;
+      flex: 0 1 300px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .search-box input:focus { border-color: var(--accent); }
+
+    /* Theme Section */
+    .theme-section { margin-bottom: 44px; }
+
+    .theme-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .theme-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .theme-info h2 {
+      font-size: 19px;
       font-weight: 800;
     }
 
-    .theme-badge {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: #FEF3C7;
-      color: #92400E;
-      border: 1px solid #FDE68A;
-    }
-
-    .folder-path {
-      font-family: monospace;
-      font-size: 12px;
-      color: var(--muted);
-      background: #EEF3F0;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
+    .swatches {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 16px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface);
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
     }
 
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold);
-      box-shadow: 0 10px 24px rgba(15, 40, 30, 0.06);
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(128, 128, 128, 0.35);
     }
 
-    .card-top h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .card-top p {
+    .theme-desc {
       font-size: 13px;
       color: var(--muted);
     }
 
-    .meta {
-      display: inline-block;
-      margin-top: 10px;
+    .folder-path {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
-      color: var(--accent);
-      background: #ECFDF5;
-      padding: 3px 9px;
+      color: var(--muted);
+      background: var(--surface-2);
+      padding: 4px 10px;
       border-radius: 6px;
     }
 
+    /* Grid & Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .cat-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--surface-2);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .spec-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .spec-badge.secondary {
+      background: var(--surface-2);
+      color: var(--muted);
+    }
+
+    /* Variant selector */
+    .variants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .var-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .var-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Actions */
     .actions {
       display: flex;
       gap: 8px;
     }
 
     .btn {
-      flex: 1;
-      text-align: center;
-      padding: 9px 12px;
+      padding: 8px 12px;
       border-radius: 8px;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      text-decoration: none;
-      border: none;
+      border: 1px solid transparent;
       font-family: inherit;
-      transition: background 0.15s ease, color 0.15s ease;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.15s ease;
     }
 
     .btn-primary {
+      flex: 1;
       background: var(--accent);
       color: #FFFFFF;
     }
 
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-    .btn-outline {
-      background: #F1F5F3;
+    .btn-secondary {
+      background: var(--surface-2);
       color: var(--text);
+      border-color: var(--border);
     }
 
-    .btn-outline:hover {
-      background: #E2EAE6;
+    .btn-secondary:hover { border-color: var(--muted); }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    /* Toast notifikasi saat URL disalin */
+    /* Preview Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 960px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    }
+
+    .modal-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title { font-size: 15px; font-weight: 700; }
+
+    .modal-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .bg-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .bg-btn.active { border-color: var(--accent); color: var(--accent); }
+
+    .preview-stage {
+      height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+    }
+
+    .preview-stage.bg-check {
+      background-color: #e5e7eb;
+      background-image:
+        linear-gradient(45deg, #cbd5e1 25%, transparent 25%),
+        linear-gradient(-45deg, #cbd5e1 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #cbd5e1 75%),
+        linear-gradient(-45deg, transparent 75%, #cbd5e1 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    .preview-stage.bg-dark { background: #111827; }
+    .preview-stage.bg-light { background: #FFFFFF; }
+    .preview-stage.bg-green { background: #00B140; }
+
+    .iframe-wrap {
+      transform-origin: center center;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+    }
+
+    .iframe-wrap iframe {
+      border: none;
+      display: block;
+      background: transparent;
+    }
+
+    /* Toast */
     #toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: #14241E;
-      color: #FAF8F2;
-      padding: 12px 18px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 11px 16px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
-      border-left: 4px solid var(--gold);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(10px);
       pointer-events: none;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
+      z-index: 200;
     }
 
-    #toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="brand">
-        <h1>✦ Overlay<span>Ku</span></h1>
-        <p>Kumpulan custom stream overlay untuk OBS Studio & TikTok LIVE Studio.</p>
+        <h1><span class="brand-dot"></span> OverlayKu</h1>
+        <p>Hub koleksi stream overlay untuk OBS Studio & TikTok LIVE Studio.</p>
       </div>
-      <div class="domain-pill" id="live-domain">overlayku.vercel.app</div>
+      <div class="header-right">
+        <div class="domain-pill" id="live-domain">overlayku.vercel.app</div>
+        <button class="mode-btn" id="mode-toggle" onclick="toggleMode()">🌙 Dark</button>
+      </div>
     </header>
+
+    <div class="toolbar">
+      <div class="filter-pills" id="theme-filters"></div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Cari overlay atau tema..." oninput="render()" />
+      </div>
+    </div>
 
     <main id="app"></main>
   </div>
 
-  <div id="toast">URL berhasil disalin!</div>
+  <!-- Live Preview Modal -->
+  <div class="modal-backdrop" id="preview-modal" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-title" id="modal-title">Preview Overlay</div>
+        <div class="modal-tools">
+          <button class="bg-btn active" onclick="setStageBg('bg-check', this)">Transparan</button>
+          <button class="bg-btn" onclick="setStageBg('bg-dark', this)">Gelap</button>
+          <button class="bg-btn" onclick="setStageBg('bg-light', this)">Terang</button>
+          <button class="bg-btn" onclick="setStageBg('bg-green', this)">Green Screen</button>
+          <a class="bg-btn" id="modal-open-tab" href="#" target="_blank" style="text-decoration:none;">Buka Tab ↗</a>
+          <button class="bg-btn" onclick="closeModal()">✕ Tutup</button>
+        </div>
+      </div>
+      <div class="preview-stage bg-check" id="preview-stage">
+        <div class="iframe-wrap" id="iframe-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">URL disalin!</div>
 
   <script>
-    // =========================================================
-    // DAFTAR TEMA & OVERLAY
-    // Nanti kalau bikin tema baru, tinggal tambahkan blok baru di sini!
-    // =========================================================
+    // =========================================================================
+    // KONFIGURASI TEMA & OVERLAY
+    // Cukup tambahkan objek baru di array THEMES ini setiap kali bikin tema baru.
+    // =========================================================================
     const THEMES = [
       {
+        id: "anime-minimalist",
         name: "Anime Minimalist",
-        badge: "Ivory • Emerald • Gold",
+        desc: "HUD bersih bergaya anime modern dengan potongan geometris.",
         folder: "themes/anime-minimalist",
+        colors: ["#FAF8F2", "#10B981", "#D4AF37"],
         items: [
           {
             title: "Running Text Frame",
+            category: "Frame",
             desc: "Bingkai layer bawah untuk running text SociaBuzz.",
             file: "running-text.html",
-            size: "1200 × 80 px"
+            w: 1200, h: 80,
+            pair: "SociaBuzz: 940×60"
           },
           {
             title: "Webcam Frame",
-            desc: "Bingkai kamera dengan sudut aksen emerald & gold.",
+            category: "Frame",
+            desc: "Bingkai kamera 16:9 dengan aksen sudut dan badge LIVE.",
             file: "webcam.html",
-            size: "640 × 380 px"
+            w: 640, h: 380,
+            pair: "Kamera: 610×345"
           },
           {
             title: "Chat Box Frame",
-            desc: "Panel transparan layer bawah untuk widget live chat.",
+            category: "Frame",
+            desc: "Panel semi-transparan layer bawah untuk widget live chat.",
             file: "chatbox.html",
-            size: "420 × 560 px"
+            w: 420, h: 560,
+            pair: "Chat: 380×450"
           },
           {
             title: "Top Info / Socials Bar",
+            category: "Bar",
             desc: "Bar info media sosial untuk bagian atas layar.",
             file: "topbar.html",
-            size: "900 × 64 px"
+            w: 900, h: 64
           },
           {
             title: "Starting / BRB Screen",
+            category: "Screen",
             desc: "Layar pembuka fullscreen dengan loading bar minimalis.",
             file: "starting.html",
-            size: "1920 × 1080 px"
+            w: 1920, h: 1080
           },
           {
             title: "Alert Box (Donasi)",
-            desc: "Template notifikasi dukungan / donasi.",
+            category: "Alert",
+            desc: "Template notifikasi dukungan / donasi dengan efek shimmer.",
             file: "alertbox.html",
-            size: "640 × 240 px"
+            w: 640, h: 240
           },
           {
-            title: "TikTok Alerts (Follow / Share / Like)",
-            desc: "Toast alert ringkas. Tambah ?type=follow, share, atau like.",
+            title: "TikTok Alerts",
+            category: "Alert",
+            desc: "Toast alert ringkas untuk interaksi penonton TikTok.",
             file: "tiktok-alerts.html",
-            size: "460 × 110 px"
+            w: 460, h: 110,
+            variants: [
+              { label: "Semua", query: "" },
+              { label: "Follow", query: "?type=follow" },
+              { label: "Share", query: "?type=share" },
+              { label: "Like", query: "?type=like" }
+            ]
           }
         ]
       }
-      // Contoh menambah tema baru nanti:
+
+      // -----------------------------------------------------------------------
+      // CONTOH MENAMBAH TEMA BARU (Hapus tanda "//" jika sudah siap dipakai)
+      // -----------------------------------------------------------------------
       // ,{
+      //   id: "cyberpunk-neon",
       //   name: "Cyberpunk Neon",
-      //   badge: "Dark • Cyan • Magenta",
-      //   folder: "themes/cyberpunk",
+      //   desc: "Tema gelap futuristik dengan aksen cyan dan magenta.",
+      //   folder: "themes/cyberpunk-neon",
+      //   colors: ["#0F172A", "#06B6D4", "#EC4899"],
       //   items: [
-      //     { title: "Webcam Frame", desc: "...", file: "webcam.html", size: "640 × 380 px" }
+      //     {
+      //       title: "Webcam Frame",
+      //       category: "Frame",
+      //       desc: "Bingkai webcam neon glow.",
+      //       file: "webcam.html",
+      //       w: 640, h: 380
+      //     }
       //   ]
       // }
     ];
 
+    // =========================================================================
+    // LOGIKA APLIKASI (Tidak perlu diubah)
+    // =========================================================================
     const origin = window.location.origin === "null" ? "https://overlayku.vercel.app" : window.location.origin;
     document.getElementById("live-domain").textContent = origin.replace(/^https?:\/\//, "");
 
-    const app = document.getElementById("app");
-    const toast = document.getElementById("toast");
-    let toastTimer;
+    let activeThemeFilter = "all";
+    const selectedVariants = {}; // Menyimpan pilihan varian aktif tiap kartu
 
+    // Light / Dark Mode
+    function toggleMode() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute("data-mode") === "dark";
+      const next = isDark ? "light" : "dark";
+      html.setAttribute("data-mode", next);
+      localStorage.setItem("overlayku-mode", next);
+      document.getElementById("mode-toggle").textContent = next === "dark" ? "☀️ Light" : "🌙 Dark";
+    }
+
+    (function initMode() {
+      const saved = localStorage.getItem("overlayku-mode");
+      if (saved === "dark") {
+        document.documentElement.setAttribute("data-mode", "dark");
+        document.getElementById("mode-toggle").textContent = "☀️ Light";
+      }
+    })();
+
+    // Render Filter Pills
+    function renderFilters() {
+      const wrap = document.getElementById("theme-filters");
+      const buttons = [
+        `<button class="pill ${activeThemeFilter === "all" ? "active" : ""}" onclick="setFilter('all')">Semua Tema (${THEMES.length})</button>`,
+        ...THEMES.map(t =>
+          `<button class="pill ${activeThemeFilter === t.id ? "active" : ""}" onclick="setFilter('${t.id}')">${t.name}</button>`
+        )
+      ];
+      wrap.innerHTML = buttons.join("");
+    }
+
+    function setFilter(id) {
+      activeThemeFilter = id;
+      renderFilters();
+      render();
+    }
+
+    function selectVariant(cardKey, query) {
+      selectedVariants[cardKey] = query;
+      render();
+    }
+
+    // Toast
+    let toastTimer;
     function showToast(msg) {
+      const toast = document.getElementById("toast");
       toast.textContent = msg;
       toast.classList.add("show");
       clearTimeout(toastTimer);
@@ -323,43 +690,134 @@
       const fullUrl = `${origin}/${relativePath}`;
       navigator.clipboard.writeText(fullUrl).then(() => {
         showToast(`Disalin: ${fullUrl}`);
+      }).catch(() => {
+        prompt("Salin URL ini:", fullUrl);
       });
     }
 
-    THEMES.forEach(theme => {
-      const section = document.createElement("section");
-      section.className = "theme-section";
+    // Live Preview Modal
+    function openPreview(title, path, w, h) {
+      const modal = document.getElementById("preview-modal");
+      const stage = document.getElementById("preview-stage");
+      const wrap = document.getElementById("iframe-wrap");
 
-      const cardsHtml = theme.items.map(item => {
-        const path = `${theme.folder}/${item.file}`;
-        return `
-          <div class="card">
-            <div class="card-top">
-              <h3>${item.title}</h3>
-              <p>${item.desc}</p>
-              <span class="meta">📐 ${item.size}</span>
+      document.getElementById("modal-title").textContent = `${title} (${w} × ${h} px)`;
+      document.getElementById("modal-open-tab").href = path;
+      modal.classList.add("open");
+
+      // Hitung skala otomatis agar iframe pas di dalam modal
+      const maxW = stage.clientWidth - 40;
+      const maxH = stage.clientHeight - 40;
+      const scale = Math.min(1, maxW / w, maxH / h);
+
+      wrap.style.width = `${w}px`;
+      wrap.style.height = `${h}px`;
+      wrap.style.transform = `scale(${scale})`;
+      wrap.innerHTML = `<iframe src="${path}" width="${w}" height="${h}" scrolling="no"></iframe>`;
+    }
+
+    function closeModal() {
+      document.getElementById("preview-modal").classList.remove("open");
+      document.getElementById("iframe-wrap").innerHTML = "";
+    }
+
+    function setStageBg(cls, btn) {
+      const stage = document.getElementById("preview-stage");
+      stage.className = `preview-stage ${cls}`;
+      document.querySelectorAll(".modal-tools .bg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // Render Main Grid
+    function render() {
+      const app = document.getElementById("app");
+      const keyword = document.getElementById("search-input").value.trim().toLowerCase();
+      app.innerHTML = "";
+
+      let totalShown = 0;
+
+      THEMES.forEach(theme => {
+        if (activeThemeFilter !== "all" && activeThemeFilter !== theme.id) return;
+
+        const filteredItems = theme.items.filter(item => {
+          if (!keyword) return true;
+          return (
+            item.title.toLowerCase().includes(keyword) ||
+            item.desc.toLowerCase().includes(keyword) ||
+            item.category.toLowerCase().includes(keyword) ||
+            theme.name.toLowerCase().includes(keyword)
+          );
+        });
+
+        if (filteredItems.length === 0) return;
+        totalShown += filteredItems.length;
+
+        const swatchesHtml = (theme.colors || [])
+          .map(c => `<span class="swatch" style="background:${c}" title="${c}"></span>`)
+          .join("");
+
+        const cardsHtml = filteredItems.map((item, idx) => {
+          const cardKey = `${theme.id}-${idx}`;
+          const activeQuery = selectedVariants[cardKey] ?? (item.variants ? item.variants[0].query : "");
+          const fullPath = `${theme.folder}/${item.file}${activeQuery}`;
+
+          const variantsHtml = item.variants
+            ? `<div class="variants">
+                ${item.variants.map(v => `
+                  <button class="var-btn ${activeQuery === v.query ? "active" : ""}"
+                    onclick="selectVariant('${cardKey}', '${v.query}')">${v.label}</button>
+                `).join("")}
+               </div>`
+            : "";
+
+          const pairHtml = item.pair ? `<span class="spec-badge secondary">${item.pair}</span>` : "";
+
+          return `
+            <div class="card">
+              <div>
+                <div class="card-header">
+                  <h3>${item.title}</h3>
+                  <span class="cat-tag">${item.category}</span>
+                </div>
+                <p>${item.desc}</p>
+                <div class="specs">
+                  <span class="spec-badge">${item.w} × ${item.h} px</span>
+                  ${pairHtml}
+                </div>
+                ${variantsHtml}
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="copyUrl('${fullPath}')">Copy URL</button>
+                <button class="btn btn-secondary" onclick="openPreview('${item.title}', '${fullPath}', ${item.w}, ${item.h})">Preview</button>
+                <a class="btn btn-secondary" href="${fullPath}" target="_blank" title="Buka di tab baru">↗</a>
+              </div>
             </div>
-            <div class="actions">
-              <button class="btn btn-primary" onclick="copyUrl('${path}')">Copy URL</button>
-              <a class="btn btn-outline" href="${path}" target="_blank">Preview ↗</a>
+          `;
+        }).join("");
+
+        const section = document.createElement("section");
+        section.className = "theme-section";
+        section.innerHTML = `
+          <div class="theme-header">
+            <div class="theme-info">
+              <h2>${theme.name}</h2>
+              ${swatchesHtml ? `<div class="swatches">${swatchesHtml}</div>` : ""}
+              <span class="theme-desc">${theme.desc || ""}</span>
             </div>
+            <span class="folder-path">/${theme.folder}/</span>
           </div>
+          <div class="grid">${cardsHtml}</div>
         `;
-      }).join("");
+        app.appendChild(section);
+      });
 
-      section.innerHTML = `
-        <div class="theme-header">
-          <div class="theme-title">
-            <h2>${theme.name}</h2>
-            <span class="theme-badge">${theme.badge}</span>
-          </div>
-          <span class="folder-path">/${theme.folder}/</span>
-        </div>
-        <div class="grid">${cardsHtml}</div>
-      `;
+      if (totalShown === 0) {
+        app.innerHTML = `<div class="empty">Tidak ada overlay yang cocok dengan pencarian "<strong>${keyword}</strong>".</div>`;
+      }
+    }
 
-      app.appendChild(section);
-    });
+    renderFilters();
+    render();
   </script>
 </body>
 </html>
